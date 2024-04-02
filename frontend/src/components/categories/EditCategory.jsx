@@ -1,29 +1,39 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import server from "../../server";
+import React from "react";
 
-function CreateProduct() {
+function EditCategory() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
-    category: "",
-    image: "",
-    mrp: 0.0,
+    description: "",
     status: "pending",
-    packSize: "",
   });
+
+  const [existingData, setExistingData] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`${server}/category`)
+        .then((response) => {
+          setExistingData(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log("Error: " + error);
+        });
+    };
+    fetchData();
+  }, []);
+
+  const handleSubmit = (itemId) => {
     const config = { header: { "Content-Type": "application/json" } };
     axios
-      .post(`${server}/product`, formData, config)
+      .put(`${server}/category/${itemId}`, formData, config)
       .then(() => {
         console.log("data added successfully");
         window.location.reload();
@@ -48,24 +58,12 @@ function CreateProduct() {
       <form onSubmit={handleSubmit}>
         <div className="d-flex flex-row justify-content-around">
           <div>
-            <label htmlFor="name">Product name: </label>
+            <label htmlFor="name">Category name: </label>
             <input type="text" id="name" onChange={handleChange} />
           </div>
           <div>
-            <label htmlFor="category">Category: </label>
-            <input type="text" id="category" onChange={handleChange} />
-          </div>
-          <div>
-            <label htmlFor="packSize">Pack Size: </label>
-            <input type="text" id="packSize" onChange={handleChange} />
-          </div>
-          <div>
-            <label htmlFor="mrp">MRP: </label>
-            <input type="text" id="mrp" onChange={handleChange} />
-          </div>
-          <div>
-            <label htmlFor="image">Image: </label>
-            <input type="text" id="image" onChange={handleChange} />
+            <label htmlFor="description">Description: </label>
+            <input type="text" id="description" onChange={handleChange} />
           </div>
           <div>
             <label htmlFor="status">Status: </label>
@@ -87,4 +85,4 @@ function CreateProduct() {
   );
 }
 
-export default CreateProduct;
+export default EditCategory;
