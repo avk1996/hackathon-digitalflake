@@ -11,8 +11,8 @@ function ProductTable() {
   const [showProductTable, setShowProductTable] = useState(true);
 
   // edit and delete functions
-  const editItem = () => {
-    console.log("edit item clicked");
+  const editItem = (productId) => {
+    console.log("edit item clicked " + productId);
   };
   const deleteItem = (itemId) => {
     console.log("delete item clicked");
@@ -90,7 +90,10 @@ function ProductTable() {
                   <td>{product.image}</td>
                   <td>{product.status}</td>
                   <td>
-                    <button className="btn btn-primary" onClick={editItem}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => editItem()}
+                    >
                       Edit
                     </button>{" "}
                     &nbsp;
