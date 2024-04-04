@@ -1,27 +1,30 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import server from "../../server";
 
 function EditCategory() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    status: "pending",
-  });
-
   const [existingData, setExistingData] = useState({});
+  const [newData, setNewData] = useState({});
+  const [categoryId] = useState(id);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setExistingData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
 
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`${server}/category`)
+        .get(`${server}/category/${id}`)
         .then((response) => {
+          setNewData(response.data);
           setExistingData(response.data);
           console.log(response.data);
         })
@@ -30,15 +33,18 @@ function EditCategory() {
         });
     };
     fetchData();
-  }, []);
+  }, [id]);
 
-  const handleSubmit = (itemId) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(`item id accessed: ${event}`);
     const config = { header: { "Content-Type": "application/json" } };
+    const updatedCategory = { ...newData, ...existingData };
     axios
-      .put(`${server}/category/${itemId}`, formData, config)
+      .put(`${server}/category/${categoryId}`, updatedCategory, config)
       .then(() => {
         console.log("data added successfully");
-        window.location.reload();
+        navigate("/category-table");
       })
       .catch((error) => {
         console.log("message: " + error);
@@ -46,43 +52,53 @@ function EditCategory() {
   };
 
   const goBack = () => {
-    navigate("/");
+    navigate("/category-table");
     console.log("set go back navigation");
   };
+
   return (
-    <div>
-      <div className="d-flex justify-content-end">
+    <div className="d-flex flex-column">
+      <div className="d-flex justify-content-end p-3">
         <button className="btn btn-dark" onClick={goBack}>
           Go back
         </button>
       </div>
-      <h1>Product form</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="d-flex flex-row justify-content-around">
-          <div>
-            <label htmlFor="name">Category name: </label>
-            <input type="text" id="name" onChange={handleChange} />
+      <div>
+        <form onSubmit={handleSubmit}>
+          <div className="d-flex flex-row justify-content-around">
+            <div>
+              <label htmlFor="name">Category name: </label>
+              <input
+                type="text"
+                id="name"
+                value={existingData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="description">Description: </label>
+              <input
+                type="text"
+                id="description"
+                value={existingData.description}
+                onChange={handleChange}
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="description">Description: </label>
-            <input type="text" id="description" onChange={handleChange} />
+          <div className="d-flex justify-content-end p-3">
+            <button
+              className="btn btn-outline-warning rounded-pill border border-dark text-dark"
+              onClick={goBack}
+            >
+              cancel
+            </button>
+            &nbsp;
+            <button type="submit" className="btn btn-success rounded-pill">
+              save
+            </button>
           </div>
-          <div>
-            <label htmlFor="status">Status: </label>
-            <input type="text" id="status" onChange={handleChange} />
-          </div>
-        </div>
-
-        <div className="d-flex flex-end">
-          <button className="btn btn-outline-warning rounded-pill border border-dark">
-            cancel
-          </button>
-          &nbsp;
-          <button type="submit" className="btn btn-success rounded-pill">
-            save
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

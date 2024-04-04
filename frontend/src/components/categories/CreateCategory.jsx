@@ -18,12 +18,13 @@ function CreateCategory() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(`Data saved: ${formData}`);
     const config = { header: { "Content-Type": "application/json" } };
     axios
       .post(`${server}/category`, formData, config)
       .then(() => {
         console.log("data added successfully");
-        window.location.reload();
+        navigate("/category-table");
       })
       .catch((error) => {
         console.log("message: " + error);
@@ -31,7 +32,7 @@ function CreateCategory() {
   };
 
   const goBack = () => {
-    navigate("/");
+    navigate("/category-table");
     console.log("set go back navigation");
   };
   return (
@@ -41,7 +42,6 @@ function CreateCategory() {
           Go back
         </button>
       </div>
-      <h1>Product form</h1>
       <form onSubmit={handleSubmit}>
         <div className="d-flex flex-row justify-content-around">
           <div>
@@ -54,7 +54,12 @@ function CreateCategory() {
           </div>
           <div>
             <label htmlFor="status">Status: </label>
-            <input type="text" id="status" onChange={handleChange} />
+            {/* <input type="text" id="status" onChange={handleChange} /> */}
+            <select name="status" id="status" onChange={handleChange}>
+              <option value="default" hidden="true"></option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
           </div>
         </div>
 

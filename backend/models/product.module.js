@@ -25,7 +25,6 @@ const productSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["active", "inactive", "pending"],
       required: true,
     },
   },

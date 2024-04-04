@@ -1,3 +1,3 @@
-const server = "http://localhost:2000/open-flake";
+const server = "http://localhost:2000/digital-flake";
 
 export default server;

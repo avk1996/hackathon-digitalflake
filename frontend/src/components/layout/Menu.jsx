@@ -10,7 +10,11 @@ function Menu() {
           {/* Sidebar Navigation */}
           <ul>
             <li className="nav-item">
-              <Link className="btn btn-outline-dark" aria-current="page" to="/">
+              <Link
+                className="btn btn-outline-dark"
+                aria-current="page"
+                to="/home"
+              >
                 Home
               </Link>
             </li>
@@ -18,7 +22,7 @@ function Menu() {
               <Link
                 className="btn btn-outline-dark"
                 aria-current="page"
-                to="./category-table"
+                to="/category-table"
               >
                 Category
               </Link>

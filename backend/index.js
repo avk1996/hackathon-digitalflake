@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const app = express();
 
 // routes
 const Product = require("./models/product.module");
 const Category = require("./models/category.model");
 
+app.use(cors());
 app.use(express.json());
 
 mongoose
@@ -21,12 +23,8 @@ mongoose
 
 // Product CURD operations
 
-app.get("/", (req, resp) => {
-  resp.send("hello world");
-});
-
 // create
-app.post("/open-flake/product", async (req, resp) => {
+app.post("/digital-flake/product", async (req, resp) => {
   try {
     const productResponse = await Product.create(req.body);
     resp.status(200).json(productResponse);
@@ -37,9 +35,10 @@ app.post("/open-flake/product", async (req, resp) => {
 });
 
 // get all
-app.get("/open-flake/products", async (req, resp) => {
+app.get("/digital-flake/products", async (req, resp) => {
   try {
     const productResponse = await Product.find();
+    console.log(productResponse);
     resp.status(200).json(productResponse);
   } catch (error) {
     resp.status(500).json({ message: error.message });
@@ -47,7 +46,7 @@ app.get("/open-flake/products", async (req, resp) => {
 });
 
 // get by id
-app.get("/open-flake/product/:id", async (req, resp) => {
+app.get("/digital-flake/product/:id", async (req, resp) => {
   try {
     const { id } = req.params;
     const singleProduct = await Product.findById(id);
@@ -58,8 +57,9 @@ app.get("/open-flake/product/:id", async (req, resp) => {
 });
 
 // update by id
-app.put("/open-flake/product/:id", async (req, resp) => {
+app.put("/digital-flake/product/:id", async (req, resp) => {
   try {
+    console.log("inside put method");
     const { id } = req.params;
     const editProduct = await Product.findByIdAndUpdate(id, req.body);
     if (!editProduct)
@@ -73,7 +73,7 @@ app.put("/open-flake/product/:id", async (req, resp) => {
 });
 
 // delete by id
-app.delete("/open-flake/product/:id", async (req, resp) => {
+app.delete("/digital-flake/product/:id", async (req, resp) => {
   try {
     const { id } = req.params;
     const deleteProduct = await Product.findByIdAndDelete(id);
@@ -88,7 +88,7 @@ app.delete("/open-flake/product/:id", async (req, resp) => {
 // category curd operation
 
 // read
-app.get("/open-flake/category", async (req, resp) => {
+app.get("/digital-flake/category", async (req, resp) => {
   try {
     const categoryResponse = await Category.find();
     resp.status(200).json(categoryResponse);
@@ -98,9 +98,10 @@ app.get("/open-flake/category", async (req, resp) => {
 });
 
 // create
-app.post("/open-flake/category", async (req, resp) => {
+app.post("/digital-flake/category", async (req, resp) => {
   try {
     const categoryResponse = await Category.create(req.body);
+    console.log("category added: " + categoryResponse);
     resp.status(200).json(categoryResponse);
   } catch (error) {
     //send custom error
@@ -109,7 +110,7 @@ app.post("/open-flake/category", async (req, resp) => {
 });
 
 // get by id
-app.get("/open-flake/category/:id", async (req, resp) => {
+app.get("/digital-flake/category/:id", async (req, resp) => {
   try {
     const { id } = req.params;
     const singleCategory = await Category.findById(id);
@@ -120,8 +121,9 @@ app.get("/open-flake/category/:id", async (req, resp) => {
 });
 
 // update
-app.put("/open-flake/category/:id", async (req, resp) => {
+app.put("/digital-flake/category/:id", async (req, resp) => {
   try {
+    console.log("inside put method");
     const { id } = req.params;
     const editCategory = await Category.findByIdAndUpdate(id, req.body);
     if (!editCategory)
@@ -134,8 +136,28 @@ app.put("/open-flake/category/:id", async (req, resp) => {
   }
 });
 
+// update status
+app.put("/digital-flake/update-category-status/:id", async (req, resp) => {
+  try {
+    const { id } = req.params;
+
+    const filter = { _id: id };
+
+    const updateStatus = { $set: { status: "inactive" } };
+
+    const editCategoryStatus = await Category.updateOne(filter, updateStatus);
+
+    if (!editCategoryStatus)
+      return resp.status(404).json({ message: "Category not found" });
+
+    resp.status(200).json({ message: "status inactive success" });
+  } catch (error) {
+    resp.status(500).json({ message: error.message });
+  }
+});
+
 // delete by id
-app.delete("/open-flake/category/:id", async (req, resp) => {
+app.delete("/digital-flake/category/:id", async (req, resp) => {
   try {
     const { id } = req.params;
     const deleteCategory = await Category.findByIdAndDelete(id);
@@ -147,6 +169,6 @@ app.delete("/open-flake/category/:id", async (req, resp) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(2000, () => {
   console.log("port started");
 });
