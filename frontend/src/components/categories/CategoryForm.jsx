@@ -78,7 +78,7 @@ function CreateCategory(props) {
           <FontAwesomeIcon icon={faArrowLeft} /> Go back
         </button>
       </div>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <div className="d-flex flex-row justify-content-around">
           <div>
             <label htmlFor="name">Category name: </label>
@@ -110,21 +110,63 @@ function CreateCategory(props) {
               <option value="inactive">Inactive</option>
             </select>
           </div>
-        </div>
+        </div> */}
+      <form onSubmit={handleSubmit}>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              <label htmlFor="name">Category name: </label>
+              <input
+                type="text"
+                id="name"
+                className="form-control"
+                value={props.formType === "edit" ? formData.name : undefined}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="description">Description: </label>
+              <input
+                type="text"
+                id="description"
+                className="form-control"
+                value={
+                  props.formType === "edit" ? formData.description : undefined
+                }
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="status">Status: </label>
+              <select
+                name="status"
+                id="status"
+                className="form-control"
+                onChange={handleChange}
+              >
+                <option value="default" hidden={!(props.formType === "edit")}>
+                  {formData.status}
+                </option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
 
-        <div className="d-flex justify-content-end m-4">
-          <button
-            className="btn btn-danger rounded-pill"
-            onClick={() => {
-              navigate("/category-table");
-            }}
-          >
-            cancel
-          </button>
-          &nbsp;
-          <button type="submit" className="btn btn-success rounded-pill">
-            save
-          </button>
+          <div className="d-flex justify-content-end m-4">
+            <button
+              className="btn btn-danger rounded-pill"
+              onClick={() => {
+                navigate("/category-table");
+              }}
+            >
+              cancel
+            </button>
+            &nbsp;
+            <button type="submit" className="btn btn-success rounded-pill">
+              save
+            </button>
+          </div>
         </div>
       </form>
     </div>

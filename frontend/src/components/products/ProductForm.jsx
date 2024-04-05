@@ -101,98 +101,111 @@ function ProductForm(props) {
       <div className="d-flex justify-content-end">
         <button className="btn btn-dark" onClick={goBack}>
           <FontAwesomeIcon icon={faArrowLeft} />
-          Go back
+          &nbsp; Go back
         </button>
       </div>
-      <h1>Product form</h1>
       <form onSubmit={handleSubmit}>
-        <div className="d-flex flex-row justify-content-around">
-          <div>
-            <label htmlFor="category">Category: </label>
-            {console.log(
-              "category: " +
-                formData.category +
-                " " +
-                (props.formType === "edit")
-            )}
-            <select name="category" id="category" onChange={handleChange}>
-              <option
-                value={
-                  props.formType === "edit" ? formData.category : undefined
-                }
-                hidden={!(props.formType === "edit")}
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              <label htmlFor="category">Category: </label>
+              <select
+                name="category"
+                id="category"
+                className="form-control"
+                onChange={handleChange}
               >
-                {formData.category}
-              </option>
-              {categories.map((category) => (
-                <option value={category.name}>{category.name}</option>
-              ))}
-            </select>
+                <option
+                  value={
+                    props.formType === "edit" ? formData.category : undefined
+                  }
+                  hidden={!(props.formType === "edit")}
+                >
+                  {formData.category}
+                </option>
+                {categories.map((category) => (
+                  <option value={category.name}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="name">Product name: </label>
+              <input
+                type="text"
+                id="name"
+                className="form-control"
+                value={props.formType === "edit" ? formData.name : undefined}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="packSize">Pack Size: </label>
+              <input
+                type="text"
+                id="packSize"
+                className="form-control"
+                value={
+                  props.formType === "edit" ? formData.packSize : undefined
+                }
+                onChange={handleChange}
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="name">Product name: </label>
-            <input
-              type="text"
-              id="name"
-              value={props.formType === "edit" ? formData.name : undefined}
-              onChange={handleChange}
-            />
+          <div className="row">
+            <div className="col-md-4">
+              <label htmlFor="mrp">MRP: </label>
+              <input
+                type="text"
+                id="mrp"
+                className="form-control"
+                value={props.formType === "edit" ? formData.mrp : undefined}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="image">Image: </label>
+              <input
+                type="text"
+                id="image"
+                placeholder="Enter image link"
+                className="form-control"
+                value={props.formType === "edit" ? formData.image : undefined}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="status">Status: </label>
+              <select
+                name="status"
+                id="status"
+                className="form-control"
+                value={props.formType === "edit" ? formData.status : undefined}
+                onChange={handleChange}
+              >
+                <option value="default" hidden></option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label htmlFor="packSize">Pack Size: </label>
-            <input
-              type="text"
-              id="packSize"
-              value={props.formType === "edit" ? formData.packSize : undefined}
-              onChange={handleChange}
-            />
+          <div className="row">
+            <div className="col-md-12">
+              <div className="d-flex justify-content-end m-4">
+                <button
+                  className="btn btn-danger rounded-pill"
+                  onClick={() => {
+                    navigate("/product-table");
+                  }}
+                >
+                  cancel
+                </button>
+                &nbsp;
+                <button type="submit" className="btn btn-success rounded-pill">
+                  save
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="mrp">MRP: </label>
-            <input
-              type="text"
-              id="mrp"
-              value={props.formType === "edit" ? formData.mrp : undefined}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="image">Image: </label>
-            <input
-              type="text"
-              id="image"
-              value={props.formType === "edit" ? formData.image : undefined}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="status">Status: </label>
-            <select
-              name="status"
-              id="status"
-              value={props.formType === "edit" ? formData.status : undefined}
-              onChange={handleChange}
-            >
-              <option value="default" hidden="true"></option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="d-flex justify-content-end m-4">
-          <button
-            className="btn btn-danger rounded-pill"
-            onClick={() => {
-              navigate("/product-table");
-            }}
-          >
-            cancel
-          </button>
-          &nbsp;
-          <button type="submit" className="btn btn-success rounded-pill">
-            save
-          </button>
         </div>
       </form>
     </div>

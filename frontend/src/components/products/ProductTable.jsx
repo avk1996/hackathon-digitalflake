@@ -79,7 +79,9 @@ function ProductTable() {
                 <td>{product.packSize}</td>
                 <td>{product.category}</td>
                 <td>{product.mrp}</td>
-                <td>{product.image}</td>
+                <td>
+                  <img src={product.image} width="50px" />
+                </td>
                 <td
                   style={{
                     color: product.status === "inactive" ? "red" : "inherit",

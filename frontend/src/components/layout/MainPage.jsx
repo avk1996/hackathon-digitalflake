@@ -7,6 +7,7 @@ import ProductForm from "../products/ProductForm";
 import CategoryTable from "..//categories/CategoryTable";
 import PopUp from "../layout/PopUp";
 import CategoryForm from "../categories/CategoryForm";
+import SignUp from "../auth/SignUp";
 
 import Menu from "./Menu";
 
@@ -22,10 +23,10 @@ function MainPage() {
         </div>
         <Routes>
           <Route path="/" element={<Login />} />
-          {/* <Route path="/main-page" element={<MainPage />} /> */}
           <Route path="/home" element={<Home />} />
           <Route path="/product-table" element={<ProductTable />} />
           <Route path="/category-table" element={<CategoryTable />} />
+          <Route path="/create-account" element={<SignUp />} />
           <Route
             path="/create-product"
             element={<ProductForm formType="new" />}

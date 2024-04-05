@@ -57,6 +57,15 @@ function Login() {
           className="m-5   p-3 rounded shadow bg-body-tertiary"
           style={{ width: "23rem" }}
         >
+          <div className="d-flex justify-content-start">
+            <Link
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/create-account" )}
+            >
+              create account
+            </Link>
+          </div>
           <div className="d-flex flex-column justify-content-center">
             <div className="d-flex justify-content-center">
               <img
