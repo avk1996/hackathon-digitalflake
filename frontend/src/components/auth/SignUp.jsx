@@ -119,7 +119,12 @@ function SignUp() {
                 <button className="btn btn-dark">Register</button>
               </div>
               <div className="d-flex justify-content-end">
-                <button className="btn btn-outline-primary text-dark border-dark">
+                <button
+                  className="btn btn-outline-primary text-dark border-dark"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
                   Go to login
                 </button>
               </div>

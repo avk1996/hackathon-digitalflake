@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import server from "../../server";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
   });
+
+  const [visible, setVisible] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -96,8 +100,24 @@ function Login() {
                 <label htmlFor="exampleInputPassword1" className="form-label">
                   Password
                 </label>
+                &nbsp;&nbsp;
+                {visible ? (
+                  <FontAwesomeIcon
+                    icon={faEye}
+                    onClick={() => {
+                      setVisible(false);
+                    }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faEyeSlash}
+                    onClick={() => {
+                      setVisible(true);
+                    }}
+                  />
+                )}
                 <input
-                  type="password"
+                  type={visible ? "text" : "password"}
                   className="form-control"
                   id="password"
                   onChange={handleChange}
@@ -108,7 +128,7 @@ function Login() {
                 <Link>forget password</Link>
               </div>
               <div className="d-flex justify-content-center">
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-dark">
                   Submit
                 </button>
               </div>
