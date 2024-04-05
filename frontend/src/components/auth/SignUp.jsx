@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import server from "../../server";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -28,21 +30,40 @@ function SignUp() {
         console.log(
           `Data added: ${result.headers} with status code ${result.status}`
         );
+        navigate("/login");
       })
       .catch((err) => {
         console.log(`Error: ${err}`);
       });
   };
 
+  const OVERLAY = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: `url("https://images.pexels.com/photos/3760093/pexels-photo-3760093.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")`,
+    zIndex: 1000,
+    height: "100vh",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  };
   return (
     <>
-      <div className="d-flex flex-column">
-        <div
-          className="p-3 mb-2 bg-primary text-white"
-          style={{ width: "18rem" }}
-        >
-          <div className="d-flex justify-content-center">
-            <h1>Sign Up</h1>
+      <div className="d-flex flex-column" style={OVERLAY}>
+        <div className="p-3 m-5 text-dark" style={{ width: "20rem" }}>
+          <div className="d-flex flex-column justify-content-center">
+            <div className="d-flex justify-content-center">
+              <img
+                src="https://digitalflake.com/wp-content/uploads/2023/04/DF_logo-transparent2.png"
+                alt="digitalflake"
+                width="100px"
+              />
+            </div>
+            <div>
+              <h3>Sign Up</h3>
+            </div>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -93,8 +114,15 @@ function SignUp() {
                 required={true}
               />
             </div>
-            <div className="d-flex justify-content-center">
-              <button className="btn btn-dark">Register</button>
+            <div className="d-flex flex-row justify-content-between">
+              <div className="d-flex justify-content-start">
+                <button className="btn btn-dark">Register</button>
+              </div>
+              <div className="d-flex justify-content-end">
+                <button className="btn btn-outline-primary text-dark border-dark">
+                  Go to login
+                </button>
+              </div>
             </div>
           </form>
         </div>

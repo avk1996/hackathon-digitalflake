@@ -58,13 +58,12 @@ function Login() {
           style={{ width: "23rem" }}
         >
           <div className="d-flex justify-content-start">
-            <Link
-              type="button"
+            <button
               className="btn btn-outline-primary"
-              onClick={() => navigate("/create-account" )}
+              onClick={() => navigate("/create-account")}
             >
               create account
-            </Link>
+            </button>
           </div>
           <div className="d-flex flex-column justify-content-center">
             <div className="d-flex justify-content-center">
