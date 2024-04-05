@@ -2,10 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import server from "../../server";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function SignUp() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -94,9 +97,25 @@ function SignUp() {
               <label htmlFor="password" className="form-label">
                 Password:{" "}
               </label>
+              &nbsp;&nbsp;
+              {visible ? (
+                <FontAwesomeIcon
+                  icon={faEye}
+                  onClick={() => {
+                    setVisible(false);
+                  }}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  onClick={() => {
+                    setVisible(true);
+                  }}
+                />
+              )}
               <input
                 className="form-control"
-                type="password"
+                type={visible ? "text" : "password"}
                 id="password"
                 onChange={handleChange}
                 required={true}
@@ -106,9 +125,25 @@ function SignUp() {
               <label htmlFor="re-pass" className="form-label">
                 Re-enter Password:{" "}
               </label>
+              &nbsp;&nbsp;
+              {visible ? (
+                <FontAwesomeIcon
+                  icon={faEye}
+                  onClick={() => {
+                    setVisible(false);
+                  }}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  onClick={() => {
+                    setVisible(true);
+                  }}
+                />
+              )}
               <input
                 className="form-control"
-                type="password"
+                type={visible ? "text" : "password"}
                 id="renterPassword"
                 onChange={handleChange}
                 required={true}
