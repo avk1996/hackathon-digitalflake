@@ -1,14 +1,16 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProductTable from "../products/ProductTable";
-import Menu from "./Menu";
-import CategoryTable from "../categories/CategoryTable";
-import CreateProduct from "../products/CreateProduct";
-import CreateCategory from "../categories/CreateCategory";
-import EditCategory from "../categories/EditCategory";
+import Login from "../auth/Login";
 import Home from "./Home";
+import ProductTable from "../products/ProductTable";
+import ProductForm from "../products/ProductForm";
+import CategoryTable from "..//categories/CategoryTable";
+import PopUp from "../layout/PopUp";
+import CategoryForm from "../categories/CategoryForm";
+
+import Menu from "./Menu";
+
 import NavBar from "./NavBarTop";
-import PopUp from "./PopUp";
 
 function MainPage() {
   return (
@@ -19,12 +21,27 @@ function MainPage() {
           <Menu />
         </div>
         <Routes>
+          <Route path="/" element={<Login />} />
+          {/* <Route path="/main-page" element={<MainPage />} /> */}
           <Route path="/home" element={<Home />} />
           <Route path="/product-table" element={<ProductTable />} />
           <Route path="/category-table" element={<CategoryTable />} />
-          <Route path="/create-product" element={<CreateProduct />} />
-          <Route path="/create-category" element={<CreateCategory />} />
-          <Route path="/edit-category/:id" element={<EditCategory />} />
+          <Route
+            path="/create-product"
+            element={<ProductForm formType="new" />}
+          />
+          <Route
+            path="/edit-product/:id"
+            element={<ProductForm formType="edit" />}
+          />
+          <Route
+            path="/create-category"
+            element={<CategoryForm formType="new" />}
+          />
+          <Route
+            path="/edit-category/:id"
+            element={<CategoryForm formType="edit" />}
+          />
           <Route path="/popup" element={<PopUp />} />
         </Routes>
       </div>

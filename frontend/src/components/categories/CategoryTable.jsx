@@ -3,6 +3,8 @@ import axios from "axios";
 import server from "../../server";
 import { useNavigate } from "react-router-dom";
 import PopUp from "../layout/PopUp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function CategoryTable() {
   const [categoryData, setCategoryData] = useState([]);
@@ -45,7 +47,10 @@ function CategoryTable() {
   }, []);
 
   return (
-    <div className="d-flex flex-column">
+    <div
+      className="d-flex flex-column p-3 m-3 shadow"
+      style={{ width: "100vw", height: "100vh" }}
+    >
       <div className="d-flex justify-content-end">
         <button className="btn btn-success" onClick={addCategoryTest}>
           Add Category
@@ -68,13 +73,19 @@ function CategoryTable() {
                 <td>{index + 110}</td>
                 <td>{category.name}</td>
                 <td>{category.description}</td>
-                <td>{category.status}</td>
+                <td
+                  style={{
+                    color: category.status === "inactive" ? "red" : "inherit",
+                  }}
+                >
+                  {category.status}
+                </td>
                 <td>
                   <button
                     className="btn btn-primary"
                     onClick={() => editItem(category._id)}
                   >
-                    Edit
+                    <FontAwesomeIcon icon={faEdit} />
                   </button>{" "}
                   &nbsp;
                   <button
@@ -82,7 +93,7 @@ function CategoryTable() {
                     onClick={() => deleteItem(category._id)}
                     disabled={category.status === "inactive" ? true : false}
                   >
-                    Delete
+                    <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </td>
               </tr>
@@ -94,6 +105,7 @@ function CategoryTable() {
         confirmDelete={confirmDelete}
         setConfirmDelete={setConfirmDelete}
         sendId={id}
+        tableType="category"
       />
     </div>
   );

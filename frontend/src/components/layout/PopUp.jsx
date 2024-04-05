@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import server from "../../server";
+import { useDispatch } from "react-redux";
+import { signOutSuccess } from "../../redux/user/UserSlice";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const MODEL_STYLES = {
   position: "fixed",
@@ -23,18 +28,39 @@ const OVERLAY = {
   zIndex: 1000,
 };
 
-function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
+function PopUp({ confirmDelete, setConfirmDelete, sendId, tableType }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const disableStatus = () => {
     // console.log("clicked to disable status for id: " + sendId);
-    axios
-      .put(`${server}/update-category-status/${sendId}`)
-      .then(() => {
-        console.log("successfully disabled item");
-        setConfirmDelete(false);
-      })
-      .catch((error) => {
-        console.log("recived error: " + error);
-      });
+    if (tableType === "category") {
+      axios
+        .put(`${server}/update-category-status/${sendId}`)
+        .then(() => {
+          console.log("successfully disabled item");
+          setConfirmDelete(false);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log("recived error: " + error);
+        });
+    } else if (tableType === "product") {
+      axios
+        .put(`${server}/update-product-status/${sendId}`)
+        .then(() => {
+          console.log("successfully disabled item");
+          setConfirmDelete(false);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log("recived error: " + error);
+        });
+    } else if (tableType === "logout") {
+      navigate("/");
+      window.location.reload(true);
+      dispatch(signOutSuccess());
+    }
   };
 
   if (!confirmDelete) return null;
@@ -46,10 +72,15 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
           style={{ zIndex: 1000 }}
         >
           <div className="modal-header d-flex justify-content-center">
-            <h5 className="modal-title">Delete</h5>
+            <h5 className="modal-title">
+              {tableType === "logout" ? "Logout" : "Delete"}
+            </h5>
           </div>
           <div className="modal-body p-3">
-            <p>Are you sure you want to delete?</p>
+            <p>
+              Are you sure you want to{" "}
+              {tableType === "logout" ? "Logout" : "Delete"}?
+            </p>
           </div>
           <div className="modal-footer d-flex justify-content-center">
             <button
@@ -66,7 +97,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
               className="btn btn-outline-danger rounded-pill mx-3"
               onClick={disableStatus}
             >
-              Delete
+              {tableType === "logout" ? "Logout" : "Delete"}
             </button>
           </div>
         </div>

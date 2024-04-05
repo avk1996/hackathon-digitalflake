@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const authRouter = require("./routes/auth.routes");
 const app = express();
 
 // routes
@@ -72,6 +73,26 @@ app.put("/digital-flake/product/:id", async (req, resp) => {
   }
 });
 
+// update status
+app.put("/digital-flake/update-product-status/:id", async (req, resp) => {
+  try {
+    const { id } = req.params;
+
+    const filter = { _id: id };
+
+    const updateStatus = { $set: { status: "inactive" } };
+
+    const editProductStatus = await Product.updateOne(filter, updateStatus);
+
+    if (!editProductStatus)
+      return resp.status(404).json({ message: "Category not found" });
+
+    resp.status(200).json({ message: "status inactive success" });
+  } catch (error) {
+    resp.status(500).json({ message: error.message });
+  }
+});
+
 // delete by id
 app.delete("/digital-flake/product/:id", async (req, resp) => {
   try {
@@ -92,6 +113,16 @@ app.get("/digital-flake/category", async (req, resp) => {
   try {
     const categoryResponse = await Category.find();
     resp.status(200).json(categoryResponse);
+  } catch (error) {
+    resp.status(500).json({ message: error.message });
+  }
+});
+
+// get only categories
+app.get("/digital-flake/categories", async (req, resp) => {
+  try {
+    const onlyCategories = await Category.find({}, "name");
+    resp.status(200).json(onlyCategories);
   } catch (error) {
     resp.status(500).json({ message: error.message });
   }
@@ -168,6 +199,9 @@ app.delete("/digital-flake/category/:id", async (req, resp) => {
     resp.status(500).json({ message: error.message });
   }
 });
+
+// Router sign up and login
+app.use("/digital-flake/auth", authRouter);
 
 app.listen(2000, () => {
   console.log("port started");
