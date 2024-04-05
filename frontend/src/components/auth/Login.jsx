@@ -4,6 +4,7 @@ import server from "../../server";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import PasswordReset from "./PasswordReset";
 
 function Login() {
   const [userLogin, setUserLogin] = useState({
@@ -12,6 +13,11 @@ function Login() {
   });
 
   const [visible, setVisible] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [id, setId] = useState(null);
+  const resetPassword = () => {
+    setConfirmDelete(true);
+  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -125,7 +131,7 @@ function Login() {
                 />
               </div>
               <div className="mb-3 d-flex justify-content-end">
-                <Link>forget password</Link>
+                <Link onClick={resetPassword}>forget password</Link>
               </div>
               <div className="d-flex justify-content-center">
                 <button type="submit" className="btn btn-dark">
@@ -136,6 +142,10 @@ function Login() {
           </div>
         </div>
       </div>
+      <PasswordReset
+        confirmDelete={confirmDelete}
+        setConfirmDelete={setConfirmDelete}
+      />
     </div>
   );
 }
