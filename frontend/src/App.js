@@ -8,11 +8,13 @@ import CategoryTable from "./components/categories/CategoryTable";
 import PopUp from "./components/layout/PopUp";
 import MainPage from "./components/layout/MainPage";
 import CategoryForm from "./components/categories/CategoryForm";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
         <MainPage />
       </BrowserRouter>
     </>

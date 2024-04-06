@@ -5,6 +5,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import PasswordReset from "./PasswordReset";
+import toast from "react-hot-toast";
 
 function Login() {
   const [userLogin, setUserLogin] = useState({
@@ -40,6 +41,7 @@ function Login() {
         console.log(
           `login success: ${result.data} with status code ${result.status}`
         );
+        toast.success("Login successfull");
         navigate("/home");
       })
       .catch((err) => {

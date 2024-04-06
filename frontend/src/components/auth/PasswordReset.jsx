@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import server from "../../server";
 import { useDispatch } from "react-redux";
 import { signOutSuccess } from "../../redux/user/UserSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -32,6 +32,7 @@ const OVERLAY = {
 function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
   const disableStatus = () => {};
 
+  const navigate = useNavigate();
   if (!confirmDelete) return null;
   return (
     <>
@@ -73,6 +74,14 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
                   Submit
                 </button>
               </div>
+              <Link
+                className="fw-ligher d-flex justify-content-center form-text mb-3"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Back to Log In
+              </Link>
             </div>
           </form>
         </div>
