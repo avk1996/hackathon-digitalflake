@@ -4,6 +4,7 @@ import server from "../../server";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 function SignUp() {
   const [user, setUser] = useState({});
@@ -20,23 +21,25 @@ function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(user);
+    // console.log(user);
 
     if (user.password !== user.renterPassword)
-      window.alert("Password do not match");
+      toast.error("Password do not match");
 
     const config = { headers: { "Content-Type": "application/json" } };
 
     axios
       .post(`${server}/auth/signup`, user, config)
       .then((result) => {
-        console.log(
-          `Data added: ${result.headers} with status code ${result.status}`
-        );
-        navigate("/login");
+        // console.log(
+        //   `Data added: ${result.headers} with status code ${result.status}`
+        // );
+        toast.success("Email Registered Successfully");
+        navigate("/");
       })
       .catch((err) => {
-        console.log(`Error: ${err}`);
+        //console.log(`Error: ${err}`);
+        toast.error(`Error: ${err}`);
       });
   };
 
@@ -151,7 +154,9 @@ function SignUp() {
             </div>
             <div className="d-flex flex-row justify-content-between">
               <div className="d-flex justify-content-start">
-                <button className="btn btn-dark">Register</button>
+                <button className="btn btn-dark" type="submit">
+                  Register
+                </button>
               </div>
               <div className="d-flex justify-content-end">
                 <button

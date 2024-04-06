@@ -2,6 +2,8 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const JWT_KEY = "mykey";
+
 // sign up api
 exports.signUp = async (req, resp) => {
   try {
@@ -20,7 +22,7 @@ exports.signUp = async (req, resp) => {
     });
 
     // create token for user
-    const token = jwt.sign({ id: newUser._id }, "mykey", { expiresIn: "7d" });
+    const token = jwt.sign({ id: newUser._id }, JWT_KEY, { expiresIn: "7d" });
 
     resp.status(201).json({
       message: "user registered successfully with token " + token,
@@ -45,7 +47,7 @@ exports.login = async (req, resp) => {
     if (!passwordValidation)
       return resp.status(401).json({ message: "Invalid password" });
 
-    const token = jwt.sign({ id: user._id }, "mykey", { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, JWT_KEY, { expiresIn: "7d" });
 
     resp.status(200).json({
       message: "user is authenticated " + token,
@@ -54,4 +56,29 @@ exports.login = async (req, resp) => {
   } catch (error) {
     resp.status(400).json({ message: "error authenticating user" });
   }
+};
+
+exports.forgetPassword = async (req, resp) => {
+  const { email } = req.body;
+  try {
+    const existingEmail = User.findOne({ email });
+    if (!existingEmail)
+      return resp.status(404).json({ message: "Email Not Found" });
+    const key = JWT_KEY + existingEmail.password;
+    const token = jwt.sign(
+      { email: existingEmail.email },
+      { id: existingEmail._id },
+      key,
+      { expiresIn: "5m" }
+    );
+    const link = `http://localhost:2000/digital-flake/${existingEmail._id}/${token}`;
+    console.log(link);
+  } catch (error) {}
+};
+
+exports.resetPassword = async (req, resp) => {
+  try {
+    const { id, token } = req.params;
+    console.log(req.params);
+  } catch (error) {}
 };

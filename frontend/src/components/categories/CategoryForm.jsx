@@ -4,6 +4,7 @@ import axios from "axios";
 import server from "../../server";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 function CreateCategory(props) {
   const navigate = useNavigate();
@@ -46,10 +47,12 @@ function CreateCategory(props) {
         .post(`${server}/category`, formData, config)
         .then(() => {
           console.log("data added successfully");
+          toast.success("Data added successfully");
           navigate("/category-table");
         })
         .catch((error) => {
           console.log("message: " + error);
+          toast.error(`Error: ${error}`);
         });
     } else if (props.formType === "edit") {
       axios
@@ -78,39 +81,6 @@ function CreateCategory(props) {
           <FontAwesomeIcon icon={faArrowLeft} /> Go back
         </button>
       </div>
-      {/* <form onSubmit={handleSubmit}>
-        <div className="d-flex flex-row justify-content-around">
-          <div>
-            <label htmlFor="name">Category name: </label>
-            <input
-              type="text"
-              id="name"
-              value={props.formType === "edit" ? formData.name : undefined}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Description: </label>
-            <input
-              type="text"
-              id="description"
-              value={
-                props.formType === "edit" ? formData.description : undefined
-              }
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="status">Status: </label>
-            <select name="status" id="status" onChange={handleChange}>
-              <option value="default" hidden={!(props.formType === "edit")}>
-                {formData.status}
-              </option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-        </div> */}
       <form onSubmit={handleSubmit}>
         <div className="container">
           <div className="row">

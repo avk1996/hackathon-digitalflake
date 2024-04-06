@@ -4,6 +4,7 @@ import axios from "axios";
 import server from "../../server";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 function ProductForm(props) {
   const navigate = useNavigate();
@@ -80,10 +81,12 @@ function ProductForm(props) {
         .put(`${server}/product/${id}`, formData, config)
         .then(() => {
           console.log("data updated successfully");
+          toast.success("data updated successfully");
           navigate("/product-table");
         })
         .catch((error) => {
           console.log("message: " + error);
+          toast.error(`Error: ${error}`);
         });
     }
   };

@@ -6,6 +6,7 @@ import { signOutSuccess } from "../../redux/user/UserSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 const MODEL_STYLES = {
   position: "fixed",
@@ -30,7 +31,25 @@ const OVERLAY = {
 };
 
 function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
+  const [data, setData] = useState({
+    email: "",
+  });
   const disableStatus = () => {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const config = { headers: { "Content-Type": "application/json" } };
+    // toast.success(data);
+    // setEmail(JSON.parse(email));
+    axios
+      .post(`${server}/auth/forgetpassword`, data, config)
+      .then((result) => {
+        toast.success("Please check your mail");
+      })
+      .catch((err) => {
+        toast.error("Error sending email: " + err);
+      });
+  };
 
   const navigate = useNavigate();
   if (!confirmDelete) return null;
@@ -38,7 +57,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
     <>
       <div style={OVERLAY}>
         <div className="bg-light" style={MODEL_STYLES}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div
               className="d-flex justify-content-center mb-3"
               style={{ fontFamily: "sans-serif", color: "#500582" }}
@@ -52,7 +71,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
             <div className="p-3">
               <div className="mb-3">
                 <label
-                  for="exampleInputEmail1"
+                  htmlFor="email"
                   className="fw-bold d-flex justify-content-center"
                 >
                   Email address
@@ -60,7 +79,12 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
                 <input
                   type="email"
                   className="form-control border border-dark"
-                  id="exampleInputEmail1"
+                  id="email"
+                  name="email"
+                  value={data.email}
+                  onChange={(e) => {
+                    setData({ ...data, email: e.target.value });
+                  }}
                   aria-describedby="emailHelp"
                 />
               </div>
@@ -74,14 +98,14 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
                   Submit
                 </button>
               </div>
-              <Link
-                className="fw-ligher d-flex justify-content-center form-text mb-3"
-                onClick={() => setConfirmDelete(false)}
-              >
-                Back to Log In
-              </Link>
             </div>
           </form>
+          <Link
+            className="fw-ligher d-flex justify-content-center form-text mb-3"
+            onClick={() => setConfirmDelete(false)}
+          >
+            Back to Log In
+          </Link>
         </div>
       </div>
     </>

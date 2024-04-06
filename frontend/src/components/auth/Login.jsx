@@ -32,20 +32,20 @@ function Login() {
 
   const login = (e) => {
     e.preventDefault();
-    console.log(userLogin);
+    // console.log(userLogin);
     const config = { headers: { "Content-Type": "application/json" } };
 
     axios
       .post(`${server}/auth/login`, userLogin, config)
       .then((result) => {
-        console.log(
-          `login success: ${result.data} with status code ${result.status}`
-        );
+        // console.log(
+        //   `login success: ${result.data} with status code ${result.status}`
+        // );
         toast.success("Login successfull");
         navigate("/home");
       })
       .catch((err) => {
-        console.log(`Error : ${err}`);
+        // console.log(`Error : ${err}`);
         toast.error(`Error: ${err}`);
       });
   };

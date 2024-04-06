@@ -203,6 +203,6 @@ app.delete("/digital-flake/category/:id", async (req, resp) => {
 // Router sign up and login
 app.use("/digital-flake/auth", authRouter);
 
-app.listen(2000, () => {
+app.listen(8080, () => {
   console.log("port started");
 });
