@@ -59,26 +59,79 @@ exports.login = async (req, resp) => {
 };
 
 exports.forgetPassword = async (req, resp) => {
-  const { email } = req.body;
   try {
-    const existingEmail = User.findOne({ email });
-    if (!existingEmail)
-      return resp.status(404).json({ message: "Email Not Found" });
+    console.log(req.body);
+    const { email } = req.body;
+    const existingEmail = await User.findOne({ email });
+    console.log(existingEmail);
+    if (!existingEmail) return resp.status(404).json("Email Not Found");
     const key = JWT_KEY + existingEmail.password;
     const token = jwt.sign(
-      { email: existingEmail.email },
-      { id: existingEmail._id },
+      { email: existingEmail.email, id: existingEmail._id },
       key,
-      { expiresIn: "5m" }
+      { expiresIn: "5m" },
+      (err, token) => {
+        if (err) {
+          console.error("Error generating token: ", err);
+          // Handle the error
+        } else {
+          // Token generated successfully
+          console.log("Token generated: ", token);
+          // Proceed with sending the token...
+          const link = `http://localhost:8080/digital-flake/auth/resetpassword/${existingEmail._id}/${token}`;
+          console.log(link);
+        }
+      }
     );
-    const link = `http://localhost:2000/digital-flake/${existingEmail._id}/${token}`;
-    console.log(link);
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error got: " + error);
+  }
 };
 
 exports.resetPassword = async (req, resp) => {
   try {
     const { id, token } = req.params;
     console.log(req.params);
-  } catch (error) {}
+    const isUser = await User.findOne({ _id: id });
+    if (!isUser)
+      return resp.status(404).json({ message: "User does not exist" });
+    const key = JWT_KEY + isUser.password;
+    const verify = jwt.verify(token, key);
+    resp.render("index", { email: verify.email });
+  } catch (error) {
+    console.log("Error in get " + error);
+    resp.send("Not verified");
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+
+  const oldUser = await User.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
+  const secret = JWT_KEY + oldUser.password;
+  try {
+    const verify = jwt.verify(token, secret);
+    console.log(verify);
+    const encryptedPassword = bcrypt.hash(password, 12);
+    console.log(encryptedPassword);
+    await User.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: {
+          password: encryptedPassword,
+        },
+      }
+    );
+
+    res.render("index", { email: verify.email, status: "verified" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "Something Went Wrong" });
+  }
 };

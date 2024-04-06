@@ -31,19 +31,18 @@ const OVERLAY = {
 };
 
 function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
-  const [data, setData] = useState({
-    email: "",
-  });
+  const [email, setEmail] = useState("");
   const disableStatus = () => {};
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const config = { headers: { "Content-Type": "application/json" } };
-    // toast.success(data);
-    // setEmail(JSON.parse(email));
-    axios
+    const data = { email };
+    console.log(data);
+    await axios
       .post(`${server}/auth/forgetpassword`, data, config)
-      .then((result) => {
+      .then((resp) => {
+        console.log(resp.status);
         toast.success("Please check your mail");
       })
       .catch((err) => {
@@ -81,9 +80,9 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
                   className="form-control border border-dark"
                   id="email"
                   name="email"
-                  value={data.email}
+                  value={email}
                   onChange={(e) => {
-                    setData({ ...data, email: e.target.value });
+                    setEmail(e.target.value);
                   }}
                   aria-describedby="emailHelp"
                 />
