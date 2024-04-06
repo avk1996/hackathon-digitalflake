@@ -76,9 +76,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId }) {
               </div>
               <Link
                 className="fw-ligher d-flex justify-content-center form-text mb-3"
-                onClick={() => {
-                  navigate("/");
-                }}
+                onClick={() => setConfirmDelete(false)}
               >
                 Back to Log In
               </Link>

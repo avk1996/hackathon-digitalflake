@@ -6,6 +6,7 @@ import { signOutSuccess } from "../../redux/user/UserSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 const MODEL_STYLES = {
   position: "fixed",
@@ -39,6 +40,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId, tableType }) {
         .put(`${server}/update-category-status/${sendId}`)
         .then(() => {
           console.log("successfully disabled item");
+          toast.success("succeessfully disabled item");
           setConfirmDelete(false);
           window.location.reload();
         })
@@ -50,6 +52,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId, tableType }) {
         .put(`${server}/update-product-status/${sendId}`)
         .then(() => {
           console.log("successfully disabled item");
+          toast.success("succeessfully disabled item");
           setConfirmDelete(false);
           window.location.reload();
         })
@@ -57,6 +60,7 @@ function PopUp({ confirmDelete, setConfirmDelete, sendId, tableType }) {
           console.log("recived error: " + error);
         });
     } else if (tableType === "logout") {
+      toast.error("Logging out");
       navigate("/");
       window.location.reload(true);
       dispatch(signOutSuccess());
